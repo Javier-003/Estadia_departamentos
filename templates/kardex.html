@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO-UTA.png') }}">
+    <title>Servicios Escolares</title>
+</head>
+<body style="background-color: #AFAFAF;">
+    <header>
+        <nav class="navbar navbar-expand-lg bg-dark">
+            <div class="container-fluid">
+                <a style="color: white;" class="navbar-brand" href="{{ url_for('Home') }}">Vinculación</a>
+                <button style="background-color: white;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a style="color: white;" class="nav-link active" aria-current="page" href="#">Finanzas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="color: white;" class="nav-link active" aria-current="page" href="{{ url_for('alumnos') }}">Alumnos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="color: white;" class="nav-link active" aria-current="page" href="{{ url_for('serviciosEscolares') }}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="color: white;" class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>   
+
+    <div class="container">
+
+        <form class="d-flex mt-3" role="search" style="align-items: center; height: 25vh; width: 30%;">
+            <input id="search" class="form-control me-2" type="text" placeholder="Buscar alumno"  aria-label="Search">
+        </form>
+
+        <div style="margin-top: 40px;">
+            <div class="row">
+                <div class="col-md-3 mb-3 card">
+                    <div style="width: 18rem;">
+                        <div class="card-header">
+                            <h5 class="text-center">Kardex</h5>
+                        </div>
+                        <div class="card-body">
+                            <small>Nombre Del Alumno</small>
+                            <input type="text" class="form-control" value="Toledo desiderio javier alejandro" readonly>
+                            <small>Matricula</small>
+                            <input type="text" class="form-control" value="202204021" readonly>
+                            <br>
+                            <a href="#" class="btn btn-success ">Acreditado</i></a>
+                            <a href="#" class="btn btn-danger ">No acreditado</i></a> 
+                        </div>   
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 card">
+                    <div style="width: 18rem;">
+                        <div class="card-header">
+                            <h5 class="text-center">Kardex</h5>
+                        </div>
+                        <div class="card-body">
+                            <small>Nombre Del Alumno</small>
+                            <input type="text" class="form-control" value="Diaz Hernandez Josue" readonly>
+                            <small>Esatus</small>
+                            <input type="text" class="form-control" value="202204006" readonly>
+                            <br>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#aceptar">Sin adeudo</i></button>
+                            <a href="#" class="btn btn-danger ">Con adeudo</i></a> 
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aceptar" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="POST">
+                    
+                        <div class="form-group">
+                            <label>Nombre del Alumno</label>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Matricula del Alumno</label>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label>Folio del alumno del Alumno</label>
+                            <input type="text" class="form-control" placeholder="10 caracteres" name="folio" pattern="^\d{10}$" maxlength="10" required>
+                        </div>
+                        
+
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">aceptar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtener todas las tarjetas
+        const cards = document.querySelectorAll('.card');
+    
+        // Manejar el evento de cambio en los selectores
+        document.getElementById('search').addEventListener('input', filterCards);
+    
+        function filterCards() {
+            const searchQuery = document.getElementById('search').value.toLowerCase();
+    
+            // Iterar sobre todas las tarjetas
+            cards.forEach(card => {
+                const nombre = card.querySelector('input[type="text"]').textContent.toLowerCase();
+
+    
+                // Mostrar u ocultar la tarjeta según los filtros seleccionados y el término de búsqueda
+                if ((nombre.includes(searchQuery) || searchQuery === '')) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+
+</body>
+
+
+</html>
