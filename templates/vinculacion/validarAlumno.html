@@ -14,7 +14,7 @@
 </head>
 <body style="background-color: #AFAFAF;">
     <header>
-        <nav class="navbar navbar-expand-lg bg-dark">
+        <nav class="navbar navbar-expand-lg bg-dark" style="position: fixed; width: 100%; top: 0; z-index: 1000;">
             <div class="container-fluid">
                 <a style="color: white;" class="navbar-brand" href="{{ url_for('Home') }}">Vinculación</a>
                 <button style="background-color: white;" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,12 +94,16 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</h5>
                         <p class="card-text">Matrícula: {{ alumno.matricula }}</p>
-                        <p class="card-text" id="grupo">Grupo: {{ alumno.grupo }}</p>
                         <p class="card-text">Correo: {{ alumno.correoAlumno }}</p>
                         <p class="card-text" id="carrera">Carrera: {{ alumno.NombreCarrera }}</p>
+                        <p class="card-text" id="grupo">Grupo: {{ alumno.grupo }}</p>
                         <p class="card-text" id="estadia">Estadía: {{ alumno.estadiaAlumno }}</p>
-                        <p class="card-text" id="estatus_servicios">Servicios escolares: {{ alumno.estatus_servicios }}</p>
-                        <p class="card-text" id="estatus_finanzas">Finanzas: {{ alumno.estatus_finanzas }}</p>
+                        <p class="card-text" id="tipo_estadia">Tipo de estadía: {{ alumno.tipo_estadia }}</p>
+                        <p class="card-text" id="Periodo">Periodo: {{ alumno.NombrePeriodo }}</p>
+                        <p class="card-text" id="PeriodoDuracion">Duracion de periodo: {{ alumno.Duracion }}</p>
+                        <p class="card-text" id="estatus_servicios">Estado servicios escolares: {{ alumno.estatus_servicios }}</p>
+                        <p class="card-text" id="estatus_finanzas">Estado Finanzas: {{ alumno.estatus_finanzas }}</p>
+                        <p class="card-text" id="folio_finanzas">Folio Finanzas: {{ alumno.folio_finanzas }}</p>
                         <a href="{{ url_for('documentosAlumnos', id_alumno=alumno._id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                     </div>
                 </div>

@@ -188,3 +188,25 @@ def init_update(app):
         else:
             flash('Alumno no encontrado en la base de datos','danger')
         return redirect(url_for('finanzas'))   
+    
+    @app.route("/seguimiento_estadía_alumno/", methods=['POST'])
+    def asignaSeguimiento():
+        id_alumno = request.form.get('idAlumno')
+        seguimiento = request.form['seguimiento_alumno']
+        alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
+
+        if alumno: 
+            db['usuarios'].update_one(
+                {'_id':ObjectId(id_alumno)},
+                {
+                    '$set':{
+                        'seguimiento_estadia':seguimiento
+                        
+                    }
+                }
+            )
+            flash('Seguimiento de estadia asignado', 'success')
+            return redirect(url_for('administrarAlumno'))
+        else:
+            flash('Alumno no encontrado en la base de datos','danger')
+        return redirect(url_for('administrarAlumno')) 

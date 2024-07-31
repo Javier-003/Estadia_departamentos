@@ -50,178 +50,220 @@
     </header> 
 
 
-<div class="container">
+    <div class="container">
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-            <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
-                {{ message }}
-            </div>
-          {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+                <div style="width: 25%; position: fixed; top: 20%; right: 10%; z-index: 1050;" class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <form class="d-flex mt-3" role="search" style="align-items: center; height: 25vh; width: 90%;">
-    <input id="search" class="form-control me-2" type="text" placeholder="Buscar alumno" style="width: 30%;" aria-label="Search">
-    <div style="margin-right: 5%;"></div> <!-- Espacio flexible entre input y select -->
-    <select id="filtroEstadia" class="form-select me-2" style="width: 20%;">
-        <option value="">Todas las estadias</option>
-        <option value="T.S.U">T.S.U</option>
-        <option value="Ingenieria">Ingeniería</option>
-    </select>
-    <div style="margin-right: 5%;"></div> <!-- Espacio flexible entre select y select -->
-    <select id="filtroCarrera" class="form-select me-2" style="width: 20%;">
-        <option value="">Todas las carreras</option>
-        {% for carreras in Carreras %}
-        <option value="{{ carreras.NombreCarrera }}">{{ carreras.NombreCarrera }}</option>
-        {% endfor %}
-    </select>
-    <div style="margin-right: 5%;"></div> 
-    <select id="filtroGrupo" class="form-select me-2" style="width: 20%;">
-        <option value="">Todas los grupos</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-    </select>
-    
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
-    </form>
-    <div>
-        <div class="row" >
-            {% for alumno in Alumnos %}
-            <div class="col-sm-4 mb-3 card" >
-                <div class="h-100" >
-                    <div class="card-body">
-                        <h5 class="card-title">{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</h5>
-                        <p class="card-text">Matrícula: {{ alumno.matricula }}</p>
-                        <p class="card-text" id="grupo">Grupo: {{ alumno.grupo }}</p>
-                        <p class="card-text">Correo: {{ alumno.correoAlumno }}</p>
-                        <p class="card-text">Contraseña: {{ alumno.contraseñaAlumno[:10] }}</p>
-                        <p class="card-text" id="carrera">Carrera: {{ alumno.NombreCarrera }}</p>
-                        <p class="card-text" id="estadia">Estadía: {{ alumno.estadiaAlumno }}</p>
-                        <p class="card-text" id="tipo_estadia">Tipo de estadía: {{ alumno.tipo_estadia }}</p>
-                        <p class="card-text" id="estatus_servicios">Estado servicios escolares: {{ alumno.estatus_servicios }}</p>
-                        <p class="card-text" id="estatus_finanzas">Estado Finanzas: {{ alumno.estatus_finanzas }}</p>
-                        <p class="card-text" id="folio_finanzas">Folio Finanzas: {{ alumno.folio_finanzas }}</p>
-                        {%if alumno.tipo_estadia == 'no asignado'%}
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#asignarestadia{{alumno._id}}">Asignar tipo de estadia</i></button>
-                        <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
-                        {%else%}
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
-                        <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
-                        {%endif%}
+        <form class="d-flex mt-3" role="search" style="align-items: center; height: 25vh; width: 90%;">
+        <input id="search" class="form-control me-2" type="text" placeholder="Buscar alumno" style="width: 30%;" aria-label="Search">
+        <div style="margin-right: 5%;"></div> <!-- Espacio flexible entre input y select -->
+        <select id="filtroEstadia" class="form-select me-2" style="width: 20%;">
+            <option value="">Todas las estadias</option>
+            <option value="T.S.U">T.S.U</option>
+            <option value="Ingenieria">Ingeniería</option>
+        </select>
+        <div style="margin-right: 5%;"></div> <!-- Espacio flexible entre select y select -->
+        <select id="filtroCarrera" class="form-select me-2" style="width: 20%;">
+            <option value="">Todas las carreras</option>
+            {% for carreras in Carreras %}
+            <option value="{{ carreras.NombreCarrera }}">{{ carreras.NombreCarrera }}</option>
+            {% endfor %}
+        </select>
+        <div style="margin-right: 5%;"></div> 
+        <select id="filtroGrupo" class="form-select me-2" style="width: 20%;">
+            <option value="">Todas los grupos</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+        </select>
+        
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Alumno</button>
+        </form>
+        <div>
+            <div class="row" >
+                {% for alumno in Alumnos %}
+                <div class="col-sm-4 mb-3 card" >
+                    <div class="h-100" >
+                        <div class="card-body">
+                            <h5 class="card-title">{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</h5>
+                            <p class="card-text">Matrícula: {{ alumno.matricula }}</p>
+                            <p class="card-text">Seguimiento de estadia: {{ alumno.seguimiento_estadia }}</p>
+                            <p class="card-text" id="grupo">Grupo: {{ alumno.grupo }}</p>
+                            <p class="card-text">Correo: {{ alumno.correoAlumno }}</p>
+                            <p class="card-text" id="carrera">Carrera: {{ alumno.NombreCarrera }}</p>
+                            <p class="card-text" id="estadia">Estadía: {{ alumno.estadiaAlumno }}</p>
+                            <p class="card-text" id="Periodo">Periodo: {{ alumno.NombrePeriodo }}</p>
+                            <p class="card-text" id="PeriodoDuracion">Duracion de periodo: {{ alumno.Duracion }}</p>
+                            <p class="card-text" id="tipo_estadia">Tipo de estadía: {{ alumno.tipo_estadia }}</p>
+                            <p class="card-text" id="estatus_servicios">Estado servicios escolares: {{ alumno.estatus_servicios }}</p>
+                            <p class="card-text" id="estatus_finanzas">Estado Finanzas: {{ alumno.estatus_finanzas }}</p>
+                            <p class="card-text" id="folio_finanzas">Folio Finanzas: {{ alumno.folio_finanzas }}</p>
+                            {% if alumno.tipo_estadia == 'no asignado' and alumno.seguimiento_estadia == 'no asignado' %}
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#asignarestadia{{alumno._id}}">Asignar tipo de estadía</button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar seguimiento de estadía</button>
+                                <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
+                            {% elif alumno.seguimiento_estadia == 'no asignado' %}
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar seguimiento de estadía</button>
+                                <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
+                            {% else %}
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
+                                <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
+                            {% endif %}
 
-                        
-                        
-                        <div class="modal fade" id="editAlumno{{alumno._id}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ url_for('editarAlumno') }}" method="POST">
-                                        
-                                            <div class="form-group">
-                                                <label>Nombre del Alumno</label>
-                                                <input type="text" class="form-control" value="{{alumno.nombreAlumno}}" id="Nombre_Alumn" name="Nombre_Alumn" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Apellidos del Alumno</label>
-                                                <input type="text" class="form-control" value="{{alumno.apellidosAlumno}}" id="apellidos_Alum" name="apellidos_Alum" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Matricula del Alumno</label>
-                                                <input type="text" class="form-control" value="{{alumno.matricula}}" id="matricula_Alum" name="matricula_Alum" minlength="9" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Correo:</label>
-                                                <input type="email" class="form-control" value="{{alumno.correoAlumno}}" id="correoAlumn" name="correoAlumn" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Contraseña:</label>
-                                                <input type="text" class="form-control" value="{{alumno.contraseñaAlumno[:10] }}" id="contraseñaAlumn" name="contraseñaAlumn" minlength="8" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Carrera:</label>
-                                                <select  class="form-select me-2" name="idCarrera">
-                                                    <option value="{{ alumno.idCarrera }}">{{ alumno.NombreCarrera }}</option>
-                                                        {% for carreras in Carreras %}
-                                                        <option value="{{ carreras._id }}">{{ carreras.NombreCarrera }}</option>
-                                                        {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Estadia del alumno del Alumno</label>
-                                                <select  class="form-select me-2" name="estadia">
-                                                    <option>{{alumno.estadiaAlumno}}</option>
-                                                    <option value="T.S.U">T.S.U</option>
-                                                    <option value="Ingenieria">Ingenieria</option>
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="idAlumno" value="{{alumno._id }}">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Guardar Alumno</button>
-                                            </div>
-                                        </form>
+                            
+                            <!---MODAL PARA ACTUALIZAR DATOS DEL ALUMNO--->
+                            <div class="modal fade" id="editAlumno{{alumno._id}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ url_for('editarAlumno') }}" method="POST">
+                                            
+                                                <div class="form-group">
+                                                    <label>Nombre del Alumno</label>
+                                                    <input type="text" class="form-control" value="{{alumno.nombreAlumno}}" id="Nombre_Alumn" name="Nombre_Alumn" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Apellidos del Alumno</label>
+                                                    <input type="text" class="form-control" value="{{alumno.apellidosAlumno}}" id="apellidos_Alum" name="apellidos_Alum" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Matricula del Alumno</label>
+                                                    <input type="text" class="form-control" value="{{alumno.matricula}}" id="matricula_Alum" name="matricula_Alum" minlength="9" maxlength="9" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Correo:</label>
+                                                    <input type="email" class="form-control" value="{{alumno.correoAlumno}}" id="correoAlumn" name="correoAlumn" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Contraseña:</label>
+                                                    <input type="text" class="form-control" value="{{alumno.contraseñaAlumno[:10] }}" id="contraseñaAlumn" name="contraseñaAlumn" minlength="8" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Carrera:</label>
+                                                    <select  class="form-select me-2" name="idCarrera">
+                                                        <option value="{{ alumno.idCarrera }}">{{ alumno.NombreCarrera }}</option>
+                                                            {% for carreras in Carreras %}
+                                                            <option value="{{ carreras._id }}">{{ carreras.NombreCarrera }}</option>
+                                                            {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Estadia del alumno del Alumno</label>
+                                                    <select  class="form-select me-2" name="estadia">
+                                                        <option>{{alumno.estadiaAlumno}}</option>
+                                                        <option value="T.S.U">T.S.U</option>
+                                                        <option value="Ingenieria">Ingenieria</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="idAlumno" value="{{alumno._id }}">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Guardar Cambios del Alumno</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!---MODAL PARA ASIGANAR EL TIPO DE ESTADIA--->
-                        <div class="modal fade" id="asignarestadia{{alumno._id}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <!---MODAL PARA ASIGANAR EL TIPO DE ESTADIA--->
+                            <div class="modal fade" id="asignarestadia{{alumno._id}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ url_for('asignartipoestadia') }}" method="POST">
+                                            
+                                                <div class="form-group">
+                                                    <label>Nombre del Alumno</label>
+                                                    <input type="text" class="form-control" name="nombreAlumno" value="{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}" id="Nombre_Alumn" name="Nombre_Alumn" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Matricula del Alumno</label>
+                                                    <input type="text" class="form-control" value="{{alumno.matricula}}" id="matricula_Alum" name="matricula_Alum" minlength="9" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Estadia del alumno del Alumno</label>
+                                                    <input type="text" class="form-control" name="estadiaAlumno" value="{{alumno.estadiaAlumno}}" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="estadia">Estadia del alumno del Alumno</label>
+                                                    <select class="form-select me-2" id="tipo_estadia" name="tipo_estadia">
+                                                        <option value="documentosTSU">Normales</option>
+                                                        <option value="documentos_Foraneas">Foraneas</option>
+                                                        <option value="documentos_Especiales">Especiales</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="idAlumno" value="{{alumno._id }}">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Asignar tipo de estadía</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form action="{{ url_for('asignartipoestadia') }}" method="POST">
-                                        
-                                            <div class="form-group">
-                                                <label>Nombre del Alumno</label>
-                                                <input type="text" class="form-control" name="nombreAlumno" value="{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}" id="Nombre_Alumn" name="Nombre_Alumn" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Matricula del Alumno</label>
-                                                <input type="text" class="form-control" value="{{alumno.matricula}}" id="matricula_Alum" name="matricula_Alum" minlength="9" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Estadia del alumno del Alumno</label>
-                                                <input type="text" class="form-control" name="estadiaAlumno" value="{{alumno.estadiaAlumno}}" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="estadia">Estadia del alumno del Alumno</label>
-                                                <select class="form-select me-2" id="tipo_estadia" name="tipo_estadia">
-                                                    <option value="documentosTSU">Normales</option>
-                                                    <option value="documentos_Foraneas">Foraneas</option>
-                                                    <option value="documentos_Especiales">Especiales</option>
-                                                </select>
-                                            </div>
+                                </div>
+                            </div>
+                            <!---MODAL PARA SEGUIMEINTO DE ESTADÍA--->
+                            <div class="modal fade" id="seguimiento{{alumno._id}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editarModalLabel">Editar Alumno</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ url_for('asignaSeguimiento') }}" method="POST">
+                                            
+                                                <div class="form-group">
+                                                    <label>Nombre del Alumno</label>
+                                                    <input type="text" class="form-control" name="nombreAlumno" value="{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}" id="Nombre_Alumn" name="Nombre_Alumn" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Matricula del Alumno</label>
+                                                    <input type="text" class="form-control" value="{{alumno.matricula}}" id="matricula_Alum" name="matricula_Alum" minlength="9" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="seguimiento_estadia">Seguimiento de estadia del Alumno</label>
+                                                    <input type="text" class="form-control" id="seguimiento_alumno" name="seguimiento_alumno" required>
+                                                </div>
+                                                
 
-                                            <div class="modal-footer">
-                                                <input type="hidden" name="idAlumno" value="{{alumno._id }}">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Guardar Alumno</button>
-                                            </div>
-                                        </form>
+                                                <div class="modal-footer">
+                                                    <input type="hidden" name="idAlumno" value="{{alumno._id }}">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Guardar asignación de estadía</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,7 +283,7 @@
                         </div>
                         <div class="form-group">
                             <label for="matricula_Alum">Matricula del Alumno</label>
-                            <input type="text" class="form-control" id="matricula_Alum" name="matricula_Alum" required>
+                            <input type="text" class="form-control" id="matricula_Alum" name="matricula_Alum" required maxlength="9" minlength="9">
                         </div>
                         <div class="form-group">
                             <label for="correoAlumn">Correo:</label>
@@ -249,7 +291,7 @@
                         </div>
                         <div class="form-group">
                             <label for="contraseñaAlumn">Contraseña:</label>
-                            <input type="password" class="form-control" id="contraseñaAlumn" name="contraseñaAlumn" required>
+                            <input type="password" class="form-control" id="contraseñaAlumn" name="contraseñaAlumn" minlength="8" required>
                         </div>
                         <div class="form-group">
                             <label for="idCarrera">Carrera:</label>
@@ -257,6 +299,16 @@
                             <select class="form-select me-2" id="idCarrera" name="idCarrera">
                                 {% for carreras in Carreras %}
                                 <option value="{{ carreras._id }}">{{ carreras.NombreCarrera }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="idPeriodo">Periodo:</label>
+                            
+                            <select class="form-select me-2" id="idPeriodo" name="idPeriodo">
+                                {% for periodos in Periodos %}
+                                <option value="{{ periodos._id }}">{{ periodos.NombrePeriodo }} {{ periodos.Duracion }}</option>
                                 {% endfor %}
                             </select>
                             

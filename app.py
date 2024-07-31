@@ -99,17 +99,25 @@ def documentosAlumnos(id_alumno=None):
 @nocache
 def ValidarAlum():
     if 'correo' in session:
-        # Obtener la lista de carreras
+         # Obtener la lista de carreras
         carreras = list(db['carreras'].find())
-        # Convertir carreras a un diccionario con CarreraId como clave
+        periodos = list(db['Periodos'].find())
+        
+        # Convertir carreras y periodos a diccionarios con _id como clave
         carreras_dict = {str(carrera['_id']): carrera['NombreCarrera'] for carrera in carreras}
+        periodos_dict = {str(periodo['_id']): {'NombrePeriodo': periodo['NombrePeriodo'], 'Duracion': periodo['Duracion']} for periodo in periodos}
+        
         # Obtener la lista de alumnos
         alumnos = list(db['usuarios'].find())
-        # Asignar el nombre de la carrera a cada alumno
+        
+        # Asignar el nombre de la carrera y del periodo a cada alumno
         for alumno in alumnos:
             alumno['NombreCarrera'] = carreras_dict.get(alumno['idCarrera'], 'Carrera no encontrada')
+            periodo_info = periodos_dict.get(alumno.get('idPeriodo'), {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''})
+            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
+            alumno['Duracion'] = periodo_info['Duracion']
         
-        return render_template("vinculacion/validarAlumno.html", Alumnos=alumnos, Carreras = carreras)
+        return render_template("vinculacion/validarAlumno.html", Alumnos=alumnos, Carreras = carreras, Periodos=periodos)
     else:
         return redirect(url_for('login'))
     
@@ -137,20 +145,29 @@ def catalago():
 @app.route("/administrar_Alumnos/")
 @nocache
 def administrarAlumno():
-    if 'correo' in session:    
+    if 'correo' in session:
         # Obtener la lista de carreras
         carreras = list(db['carreras'].find())
-        # Convertir carreras a un diccionario con _id como clave
+        periodos = list(db['Periodos'].find())
+        
+        # Convertir carreras y periodos a diccionarios con _id como clave
         carreras_dict = {str(carrera['_id']): carrera['NombreCarrera'] for carrera in carreras}
+        periodos_dict = {str(periodo['_id']): {'NombrePeriodo': periodo['NombrePeriodo'], 'Duracion': periodo['Duracion']} for periodo in periodos}
+        
         # Obtener la lista de alumnos
         alumnos = list(db['usuarios'].find())
-        # Asignar el nombre de la carrera a cada alumno
+        
+        # Asignar el nombre de la carrera y del periodo a cada alumno
         for alumno in alumnos:
             alumno['NombreCarrera'] = carreras_dict.get(alumno['idCarrera'], 'Carrera no encontrada')
+            periodo_info = periodos_dict.get(alumno.get('idPeriodo'), {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''})
+            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
+            alumno['Duracion'] = periodo_info['Duracion']
         
-        return render_template("vinculacion/administrarAlumn.html", Alumnos=alumnos, Carreras=carreras)
+        return render_template("vinculacion/administrarAlumn.html", Alumnos=alumnos, Carreras=carreras, Periodos=periodos)
     else:
         return redirect(url_for('login'))
+
 
 
 @app.route("/Finanzas/")
@@ -158,52 +175,50 @@ def finanzas():
     if 'correo' in session:    
         # Obtener la lista de carreras
         carreras = list(db['carreras'].find())
-        # Convertir carreras a un diccionario con _id como clave
+        periodos = list(db['Periodos'].find())
+        
+        # Convertir carreras y periodos a diccionarios con _id como clave
         carreras_dict = {str(carrera['_id']): carrera['NombreCarrera'] for carrera in carreras}
+        periodos_dict = {str(periodo['_id']): {'NombrePeriodo': periodo['NombrePeriodo'], 'Duracion': periodo['Duracion']} for periodo in periodos}
+        
         # Obtener la lista de alumnos
         alumnos = list(db['usuarios'].find())
-        # Asignar el nombre de la carrera a cada alumno
+        
+        # Asignar el nombre de la carrera y del periodo a cada alumno
         for alumno in alumnos:
             alumno['NombreCarrera'] = carreras_dict.get(alumno['idCarrera'], 'Carrera no encontrada')
-        return render_template("Finanzas/finanza.html", Alumnos=alumnos, Carreras=carreras)
+            periodo_info = periodos_dict.get(alumno.get('idPeriodo'), {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''})
+            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
+            alumno['Duracion'] = periodo_info['Duracion']
+        return render_template("Finanzas/finanza.html", Alumnos=alumnos, Carreras=carreras, Periodos=periodos)
     else:
         return redirect (url_for('login'))
 
 @app.route("/Servicios/")
 def servicios(): 
     if 'correo' in session:
-            # Obtener la lista de carreras
+         # Obtener la lista de carreras
         carreras = list(db['carreras'].find())
-            # Convertir carreras a un diccionario con _id como clave
+        periodos = list(db['Periodos'].find())
+        
+        # Convertir carreras y periodos a diccionarios con _id como clave
         carreras_dict = {str(carrera['_id']): carrera['NombreCarrera'] for carrera in carreras}
-            # Obtener la lista de alumnos
+        periodos_dict = {str(periodo['_id']): {'NombrePeriodo': periodo['NombrePeriodo'], 'Duracion': periodo['Duracion']} for periodo in periodos}
+        
+        # Obtener la lista de alumnos
         alumnos = list(db['usuarios'].find())
-            # Asignar el nombre de la carrera a cada alumno
+        
+        # Asignar el nombre de la carrera y del periodo a cada alumno
         for alumno in alumnos:
-            alumno['NombreCarrera'] = carreras_dict.get(alumno['idCarrera'], 'Carrera no encontrada')   
-        return render_template("Servicios/servicios.html", Alumnos=alumnos, Carreras=carreras)
+            alumno['NombreCarrera'] = carreras_dict.get(alumno['idCarrera'], 'Carrera no encontrada')
+            periodo_info = periodos_dict.get(alumno.get('idPeriodo'), {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''})
+            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
+            alumno['Duracion'] = periodo_info['Duracion']
+
+        return render_template("Servicios/servicios.html", Alumnos=alumnos, Carreras=carreras, Periodos=periodos)
     else:
         return redirect (url_for('login'))
 
-
-
-    
-    
-
-
-
-
-#####DESCARGAR o VISUALIZAR##########
-
-
-
-
-###DELETE###
-
-
-    
-
-##############UPDATE##########################################
 
 
 
