@@ -52,7 +52,7 @@ def init_view(app):
         else:
             archivo_nombre = None
             archivo_bin = None
-
+ 
         conexion.insert_one({
             'nombre': archivo_nombre,  # Guarda el nombre del archivo en la base de datos
             'archivo': archivo_bin,

@@ -68,10 +68,6 @@ def iniciar():
 
             
         
-        
-    # If login fails, flash an error message and redirect to the login page
-    flash('Correo o contraseña incorrectos', 'danger')
-    return redirect(url_for('login'))
 
     
 @app.route('/Validar/documentos_Alumno/<id_alumno>', methods=['GET', 'POST'])
