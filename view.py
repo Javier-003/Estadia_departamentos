@@ -16,11 +16,43 @@ def init_view(app):
         if alumno:
             datos = ver_documento_alumno_uta(id_alumno, nombre_archivo)
             if datos:
-                documento_stream = io.BytesIO(datos)
+                documento_stream = io.BytesIO(datos) 
                 documento_stream.seek(0)
                 mimetype = 'application/pdf'
                 return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
         return 'Archivo no encontrado', 404
+    
+    @app.route('/alumno_UTA/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
+    def ver_archivo_alumno_uta_1(id_alumno):
+        
+
+        try:
+            id_alumno = ObjectId(id_alumno)
+        except Exception as e:
+            return 'ID de alumno inválido', 400
+
+        # Busca el documento del alumno
+        alumno_documento = db['usuarios'].find_one({'_id': id_alumno})
+        
+
+        if alumno_documento and 'formato_tres_opciones' in alumno_documento:
+            formato_tres_opciones = alumno_documento['formato_tres_opciones']
+            
+
+            if formato_tres_opciones and 'archivo' in formato_tres_opciones:
+                archivo = formato_tres_opciones['archivo']
+                
+
+                if archivo:
+                    datos = archivo
+                    documento_stream = io.BytesIO(datos)
+                    documento_stream.seek(0)
+                    mimetype = 'application/pdf'
+                    return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
+
+        return 'Archivo no encontrado', 404
+
+
 
 
     @app.route('/Validar/documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])

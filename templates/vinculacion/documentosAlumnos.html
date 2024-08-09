@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-lg bg-dark">
             <div class="container-fluid">
                 {% if alumno %}
-                <a style="color: white;" class="navbar-brand" href="#">Documentacion de {{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</a>
+                <a style="color: white;" class="navbar-brand" href="#">Documentacion de {{ alumno.nombreAlumno }} </a>
                 {% else %}
                     <p>Alumno no encontrado</p>
                 {% endif %}
@@ -39,7 +39,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> 
         </nav>
     </header>
     <div class="container">
@@ -60,7 +60,7 @@
                 {% if alumno %}
                 <div class="col-md-3 mb-3">
                     <div class="card" style="width: 18rem;">                       
-                        <div class="card-body" >
+                        <div class="card-body">
                             <small>Nombre Del Documento</small>
                             <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                             <small>Estatus</small>
@@ -70,11 +70,9 @@
                             
                             <br>
                             {% if alumno.formato_tres_opciones.estado == 'activo' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                            
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -82,11 +80,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -103,10 +101,10 @@
                                 </div>
                             </div>
                             {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <a href="{{ url_for('ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -114,11 +112,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -135,12 +133,12 @@
                                 </div>
                             </div>
                             {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+                            <a href="{{ url_for('ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                             {% elif alumno.formato_tres_opciones.estado == 'devuelto' %} 
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -148,11 +146,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -194,11 +192,11 @@
                             
                             <br>
                             {% if alumno.formato_tres_opciones.estado == 'activo' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                             
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                            
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -206,11 +204,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -227,10 +225,10 @@
                                 </div>
                             </div>
                             {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                            <a href="{{ url_for('ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -238,11 +236,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -259,12 +257,12 @@
                                 </div>
                             </div>
                             {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+                            <a href="{{ url_for('ver_archivo_alumno_uta_1', id_alumno=alumno._id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                             {% elif alumno.formato_tres_opciones.estado == 'devuelto' %} 
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-                            <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
-                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
-                            <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+                            
+                            <a href="{{ url_for('aceptar_documento_nuevo_uta', id_alumno=alumno._id) }}" class="btn btn-success">Aceptar</a>
+                            <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento">Devolver</a>
+                            <div class="modal fade" id="devolver_documento" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -272,11 +270,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url_for('devolver_documento_alumno') }}" method="POST">
+                                            <form action="{{ url_for('devolver_documento_alumno_uta') }}" method="POST">
                                             
                                                 <div class="form-group">
                                                     <label>Nombre del documento</label>
-                                                    <input type="text" class="form-control" value="{{key}}" id="Nombre_documento" name="Nombre_documento" readonly>
+                                                    <input type="text" class="form-control" value="formato_tres_opciones" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Razon de devolvicion</label>
@@ -314,7 +312,6 @@
                             
                             <br>
                             {% if documento.estado == 'activo' %}
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                             
                             <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
                             <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
@@ -381,7 +378,7 @@
                             {% elif documento.estado == 'aceptado' %}
                             <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
                             {% elif documento.estado == 'devuelto' %} 
-                            <a href="{{ url_for('ver_archivo_alumno', nombre_archivo=key, id_alumno=alumno._id) }}"  class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+
                             <a href="{{ url_for('aceptar_documento_nuevo', id_alumno=alumno._id, documento_nombre=key) }}" class="btn btn-success">Aceptar</a>
                             <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolver_documento{{key}}">Devolver</a>
                             <div class="modal fade" id="devolver_documento{{key}}" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">

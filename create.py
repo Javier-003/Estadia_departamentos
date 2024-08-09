@@ -29,11 +29,13 @@ def init_create(app):
             estadia = request.form['estadia']
             periodo = request.form['idPeriodo']
             grupo = request.form['grupo']
+            telefono =request.form['telefonoAlumno']
             password = request.form['contraseñaAlumn']
             hashpass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             
             alumnos.insert_one({
                 'nombreAlumno': nombre,
+                'telefonoAlumno':telefono,
                 'apellidosAlumno': apellidos,
                 'grupo': grupo ,
                 'matricula': matricula,
@@ -55,6 +57,57 @@ def init_create(app):
             flash ('El alumno no se pudo registrar.','danger')
         return redirect(url_for('administrarAlumno'))
 
+
+    @app.route("/Registrarse/", methods=['POST'])
+    def Registrarse():
+        alumnos = db["usuarios"]
+        if request.method == 'POST':
+            correo = request.form['correoAlumn']
+            matricula = request.form['matricula_Alum']
+            existing_alumno = alumnos.find_one({
+                '$or': [
+                    {'correoAlumno': correo},
+                    {'matricula': matricula}
+                ]
+            })
+            if existing_alumno:
+                flash ('El correo o la matrícula ya están registrados.','warning')
+                return redirect(url_for('administrarAlumno'))
+
+            nombre = request.form['Nombre_Alumn']
+            apellidos = request.form['apellidos_Alum']
+            carrera = request.form['idCarrera']
+            estadia = request.form['estadia']
+            periodo = request.form['idPeriodo']
+            grupo = request.form['grupo']
+            telefono =request.form['telefonoAlumno']
+            password = request.form['contraseñaAlumn']
+            hashpass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            
+            alumnos.insert_one({
+                'nombreAlumno': nombre,
+                'telefonoAlumno':telefono,
+                'apellidosAlumno': apellidos,
+                'grupo': grupo ,
+                'matricula': matricula,
+                'correoAlumno': correo,
+                'contraseñaAlumno': hashpass,
+                'idCarrera': carrera,
+                'estadiaAlumno': estadia,
+                'idPeriodo': periodo,
+                "tipo_estadia":'no asignado',
+                "estatus_servicios": 'no asignado',
+                "estatus_finanzas": 'no asignado',
+                "folio_finanzas":'no asignado',
+                "seguimiento_estadia":'no asignado',
+                "formato_tres_opciones": {"estado": "activo", "archivo": None, "comentario": None}
+            })
+            flash ('Alumno registrado exitosamente.','success')
+            return redirect(url_for('login'))
+        else:
+            flash ('El alumno no se pudo registrar.','danger')
+        return redirect(url_for('registro'))
+
     @app.route('/asignar_tipo_estadia/', methods=['POST'])
     @nocache
     def asignartipoestadia():
@@ -71,17 +124,17 @@ def init_create(app):
         if tipo_estadia == 'documentos_Especiales':
             documentos_Especiales_data = {
                 "id_usuario": id_alumno,
-                "vigencia del imss": {"estado": "activo", "archivo": None, "comentario": None},
+                "vigencia_del_imss": {"estado": "activo", "archivo": None, "comentario": None},
                 "kardex": {"estado": "activo", "archivo": None, "comentario": None},
-                "formato autorizacion estadías": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "oficio tutor autorizando estadía": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "registro estadía": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "cronograma de actividades": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "1er informe": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "2do informe": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "3er informe": {"estado": "desactivado", "archivo": None, "comentario": None},
-                "carta liberacion de estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberación de memoria": {"estado": "desactivado", "archivo": None, "comentario": None}
+                "formato_autorizacion_estadías": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "oficio_tutor_autorizando_estadía": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "registro_estadía": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "cronograma_de_actividades": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "1er_informe": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "2do_informe": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "3er_informe": {"estado": "desactivado", "archivo": None, "comentario": None},
+                "carta_liberación_de_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None, "comentario": None}
             }
 
             db['usuarios'].update_one(
@@ -100,23 +153,23 @@ def init_create(app):
         elif tipo_estadia == 'documentos_Foraneas':
             documentos_Foraneas_data = {
                 "id_usuario": id_alumno,
-                "vigencia del imss": {"estado": "activo", "archivo": None, "comentario": None},
+                "vigencia_del_imss": {"estado": "activo", "archivo": None, "comentario": None},
                 "kardex": {"estado": "activo", "archivo": None, "comentario": None},
-                "formato autorizacion estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta de buena conducta": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "kardex actualizado": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta compromiso firmada": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse solicitud de espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse carta presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "registro estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "cronograma de actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "1er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "2do informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "3er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "formato_autorizacion_estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_de_buena_conducta": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "kardex_actualizado": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_compromiso_firmada": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_solicitud_de_espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_carta_presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "registro_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "cronograma_de_actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "1er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "2do_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "3er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
                 "evaluación de estadía por empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberacion de estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberación de memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
+                "carta_liberación_de_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
             }
 
             db['usuarios'].update_one(
@@ -135,23 +188,23 @@ def init_create(app):
         elif estadia_Alumno == 'T.S.U' and tipo_estadia == 'documentosTSU':
             documentosTSU_data = {
                 "id_usuario": id_alumno,
-                "vigencia del imss": {"estado": "activo", "archivo": None, "comentario": None},
+                "vigencia_del_imss": {"estado": "activo", "archivo": None, "comentario": None},
                 "kardex": {"estado": "activo", "archivo": None, "comentario": None},
-                "formato autorizacion estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "copia carnet": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "vigencia seguro social": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse solicitud de espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse carta presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "registro estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "cronograma de actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "1er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "2do informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "3er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "evaluación de estadía por empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta de liberación por empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberacion de estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberación de memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
+                "formato_autorizacion_estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "copia_carnet": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "vigencia_seguro_social": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_solicitud_de_espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_carta_presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "registro_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "cronograma_de_actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "1er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "2do_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "3er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "evaluación_de_estadía_por_empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_de_liberación_por_empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_liberación_de_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
             }
 
             db['usuarios'].update_one(
@@ -170,21 +223,21 @@ def init_create(app):
         else:
             documentosLIC_ING_data = {
                 "id_usuario": id_alumno,
-                "vigencia del imss": {"estado": "activo", "archivo": None, "comentario": None},
+                "vigencia_del_imss": {"estado": "activo", "archivo": None, "comentario": None},
                 "kardex": {"estado": "activo", "archivo": None, "comentario": None},
-                "formato autorizacion estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse solicitud de espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "acuse carta presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "registro estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "cronograma de actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "1er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "2do informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "3er informe": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "evaluación de estadía por empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "formato_autorizacion_estadías": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_solicitud_de_espacio": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "acuse_carta_presentación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_aceptación": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "registro_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "cronograma_de_actividades": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "1er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "2do_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "3er_informe": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "evaluación_de_estadía_por_empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
                 "carta de liberación por empresa": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberacion de estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
-                "carta liberación de memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
+                "carta_liberación_de_estadía": {"estado": "desactivado", "archivo": None,"comentario":None},
+                "carta_liberación_de_memoria": {"estado": "desactivado", "archivo": None,"comentario":None}
             }
 
             db['usuarios'].update_one(

@@ -44,10 +44,10 @@ def obtener_usuario_por_correo(correo):
 def obtener_documentos_alumno_uta(id_alumno):
     documentos_collections = ['documentos_TSU', 'documentos_LIC_ING', 'documentos_foraneas', 'documentos_especiales']
     for collection in documentos_collections:
-        documentos = db[collection].find_one({'id_usuario': id_alumno})
+        documentos = db[collection].find_one({'id_usuario': str(id_alumno)})
         if documentos:
             return documentos
-    return {}
+    return None
 
 def ver_documento_alumno_uta(id_alumno, nombre_archivo):
     documentos_collections = ['documentos_TSU', 'documentos_LIC_ING', 'documentos_foraneas', 'documentos_especiales']
@@ -71,7 +71,7 @@ def subir_documento(id_alumno, documento_nombre,archivo):
                     archivo_bin = Binary(archivo_data)  # Almacena el contenido del archivo como datos binarios en la base de datos
                 else:
                     flash('El archivo debe ser .pdf, .doc, .docx, .xlsx, .xls','warning')
-                    return redirect(url_for('registerColaborador'))
+                    return redirect(url_for('alumno_vista', id_alumno=id_alumno))
             else:
                 archivo_bin = None
             db[collection].update_one(

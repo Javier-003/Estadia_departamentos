@@ -114,6 +114,11 @@
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
                                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar seguimiento de estadía</button>
                                 <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
+                            {% elif alumno.tipo_estadia == 'no asignado' %}
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#asignarestadia{{alumno._id}}">Asignar tipo de estadía</button>
+                            
+                                <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
                             {% else %}
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
                                 <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
@@ -284,6 +289,10 @@
                         <div class="form-group">
                             <label for="matricula_Alum">Matricula del Alumno</label>
                             <input type="text" class="form-control" id="matricula_Alum" name="matricula_Alum" required maxlength="9" minlength="9">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono_alumno">Numero de telefono:</label>
+                            <input type="text" class="form-control" id="telefonoAlumno" name="telefonoAlumno" placeholder="Introduce telefono" required>
                         </div>
                         <div class="form-group">
                             <label for="correoAlumn">Correo:</label>
