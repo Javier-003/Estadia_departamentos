@@ -94,7 +94,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ alumno.nombreAlumno }} {{ alumno.apellidosAlumno }}</h5>
                             <p class="card-text">Matrícula: {{ alumno.matricula }}</p>
-                            <p class="card-text">Seguimiento de estadia: {{ alumno.seguimiento_estadia }}</p>
+                            <p class="card-text">Control de estadia: {{ alumno.seguimiento_estadia }}</p>
                             <p class="card-text" id="grupo">Grupo: {{ alumno.grupo }}</p>
                             <p class="card-text">Correo: {{ alumno.correoAlumno }}</p>
                             <p class="card-text" id="carrera">Carrera: {{ alumno.NombreCarrera }}</p>
@@ -108,11 +108,11 @@
                             {% if alumno.tipo_estadia == 'no asignado' and alumno.seguimiento_estadia == 'no asignado' %}
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
                                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#asignarestadia{{alumno._id}}">Asignar tipo de estadía</button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar seguimiento de estadía</button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar control de estadía</button>
                                 <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
                             {% elif alumno.seguimiento_estadia == 'no asignado' %}
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar seguimiento de estadía</button>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#seguimiento{{alumno._id}}">Asignar control de estadía</button>
                                 <a href="{{ url_for('eliminarAlumno', alumno_id=alumno._id) }}" class="btn btn-danger btn-delete"><i class="bi bi-trash3"></i></a>
                             {% elif alumno.tipo_estadia == 'no asignado' %}
                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editAlumno{{alumno._id}}"><i class="bi bi-pencil-square"></i></button>

@@ -25,3 +25,11 @@ def init_delete(app):
         periodo_id = request.form['idPeriodo']
         conexion.update_one({'_id': ObjectId(periodo_id)}, {'$set': {'Estatus': False}})
         return redirect(url_for('iniciarPeriodo'))
+    
+    @app.route('/Eliminar_archivo/<archivo_id>/')
+    def Eliminar_archivo(archivo_id):
+        archivo = db['archivos_vinculacion']
+        archivo.delete_one({'_id':ObjectId(archivo_id)})
+        eliminar_documento_alumno(archivo_id)
+        flash ('Archivo eliminado correctamente.','success')
+        return redirect(url_for('catalago'))

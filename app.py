@@ -81,48 +81,13 @@ def iniciar():
         elif departamento == 'finanzas':
             return redirect(url_for('finanzas'))
         else:
-            return redirect(url_for('login'))
-        
-    login_alumno = alumno.find_one({'correoAlumno': correo})
-    if login_alumno and bcrypt.checkpw(password.encode('utf-8'), login_alumno['contraseñaAlumno']):
-            # Autenticación exitosa
-            session['correo'] = correo
-            flash('Inicio de sesión exitoso como alumno.','success')
-            return redirect(url_for('alumno_vista'))    
+            return redirect(url_for('login'))   
 
     # Si el inicio de sesión falla, muestra un mensaje de error
     flash('Correo o contraseña incorrectos', 'danger')
     return redirect(url_for('login'))
 
             
-@app.route('/UTA_ALUMNO/')
-@nocache
-def alumno_vista():
-    correo = session.get('correo')
-    if correo:
-        alumno = obtener_usuario_por_correo(correo)
-        if alumno:
-            documentacion_alumno = obtener_documentos_alumno_uta(alumno['_id'])
-
-            # Obtener la lista de carreras y periodos
-            carreras = list(db['carreras'].find())
-            periodos = list(db['Periodos'].find())
-
-            # Convertir carreras y periodos a diccionarios con _id como clave
-            carreras_dict = {str(carrera['_id']): carrera['NombreCarrera'] for carrera in carreras}
-            periodos_dict = {str(periodo['_id']): {'NombrePeriodo': periodo['NombrePeriodo'], 'Duracion': periodo['Duracion']} for periodo in periodos}
-
-            # Asignar el nombre de la carrera y del periodo al alumno actual
-            alumno['NombreCarrera'] = carreras_dict.get(alumno.get('idCarrera', ''), 'Carrera no encontrada')
-            periodo_info = periodos_dict.get(alumno.get('idPeriodo', ''), {'NombrePeriodo': 'Periodo no encontrado', 'Duracion': ''})
-            alumno['NombrePeriodo'] = periodo_info['NombrePeriodo']
-            alumno['Duracion'] = periodo_info['Duracion']
-
-            return render_template('alumno_uta.html', alumno=alumno, documentos=documentacion_alumno, Carreras=carreras, Periodos=periodos)
-        else:
-            flash('No se encontró al alumno.', 'danger')
-    return redirect(url_for('login'))
-
 
 
     

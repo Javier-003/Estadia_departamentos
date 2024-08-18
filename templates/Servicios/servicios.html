@@ -90,14 +90,14 @@
     <div class="search-container">
         <input type="text" id="search-box" class="search-box" placeholder="Escribe la matrícula aquí..." oninput="filterTable()">
         <input type="text" id="search-box-name" class="search-box-name" placeholder="Escribe el nombre aquí..." oninput="filterTable()">
-        <select id="carrera-filter" class="filter-select">
+        <select id="carrera-filter" class="filter-select" onchange="filterTable()">
             <option value="">Todas las carreras</option>
             <option value="Tics">Tics</option>
             <option value="Desarrollo">Desarrollo</option>
             <option value="Gastronomía">Gastronomía</option>
             <option value="Mantenimiento">Mantenimiento</option>
         </select>
-        <select id="cuatrimestre-filter" class="filter-select">
+        <select id="cuatrimestre-filter" class="filter-select" onchange="filterTable()">
             <option value="">Todos los cuatrimestres</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -112,68 +112,82 @@
             <option value="11">11</option>
         </select>
     </div>
-</header>
-
-<br>
-<div class="container">
-    <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Matrícula</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Carrera</th>
-            <th scope="col">Cuatrimestre</th>
-            <th scope="col">Kardex</th>
-            <th scope="col">Status Finanzas</th>
-            <th scope="col">Folio</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider" id="table-body">
-          {% for alumno in Alumnos %}
-            <tr>
-            <th scope="row"> {{alumno.matricula}} </th>
-            <td>{{alumno.nombreAlumno}} {{alumno.apellidosAlumno}}</td>
-            <td>{{alumno.NombreCarrera}}</td>
-            <td>1</td>
-            <td><button class="styled-button" data-bs-toggle="modal" data-bs-target="#kardexModal">Ver Kardex</button></td>
-            <td>{{alumno.estatus_finanzas}}</td>
-            <td>{{alumno.folio_finanzas}}</td>
-            <td>
-                {% if alumno.estatus_servicios == 'no asignado' %}
-                    <a href="{{ url_for('acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-success">Acreditado</a>
-                    <a href="{{ url_for('no_acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-danger">No acreditado</a>
-                {% elif alumno.estatus_servicios == 'no acreditado' %}
-                    <a href="{{ url_for('acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-success">Acreditado</a>
-                {% else %}
-                Acreditado
-                {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-
-         
-        </tbody>
-      </table>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="kardexModal" tabindex="-1" aria-labelledby="kardexModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="kardexModalLabel">Kardex del Alumno</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Contenido del Kardex aquí...</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
+    
+    <br>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Matrícula</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Carrera</th>
+                    <th scope="col">Cuatrimestre</th>
+                    <th scope="col">Kardex</th>
+                    <th scope="col">Status Finanzas</th>
+                    <th scope="col">Folio</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider" id="table-body">
+                {% for alumno in Alumnos %}
+                <tr>
+                    <th scope="row"> {{alumno.matricula}} </th>
+                    <td>{{alumno.nombreAlumno}} {{alumno.apellidosAlumno}}</td>
+                    <td>{{alumno.NombreCarrera}}</td>
+                    <td>1</td>
+                    <td><button class="styled-button" data-bs-toggle="modal" data-bs-target="#kardexModal">Ver Kardex</button></td>
+                    <td>{{alumno.estatus_finanzas}}</td>
+                    <td>{{alumno.folio_finanzas}}</td>
+                    <td>
+                        {% if alumno.estatus_servicios == 'no asignado' %}
+                        <a href="{{ url_for('acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-success">Acreditado</a>
+                        <a href="{{ url_for('no_acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-danger">No acreditado</a>
+                        {% elif alumno.estatus_servicios == 'no acreditado' %}
+                        <a href="{{ url_for('acreditar_Alumno', id_alumno=alumno._id) }}" class="btn btn-success">Acreditado</a>
+                        {% else %}
+                        Acreditado
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </div>
-</div>
-
+    
+    <script>
+    function filterTable() {
+        // Get the values from the input fields and dropdowns
+        let matriculaInput = document.getElementById('search-box').value.toLowerCase();
+        let nombreInput = document.getElementById('search-box-name').value.toLowerCase();
+        let carreraInput = document.getElementById('carrera-filter').value.toLowerCase();
+        let cuatrimestreInput = document.getElementById('cuatrimestre-filter').value.toLowerCase();
+    
+        // Get the table rows
+        let tableRows = document.querySelectorAll('#table-body tr');
+    
+        // Loop through each row and hide or show based on the filter criteria
+        tableRows.forEach(row => {
+            // Get the text from each relevant column in the row
+            let matriculaText = row.cells[0].textContent.toLowerCase();
+            let nombreText = row.cells[1].textContent.toLowerCase();
+            let carreraText = row.cells[2].textContent.toLowerCase();
+            let cuatrimestreText = row.cells[3].textContent.toLowerCase();
+    
+            // Check if the row matches all the filter criteria
+            let matchesMatricula = matriculaText.includes(matriculaInput);
+            let matchesNombre = nombreText.includes(nombreInput);
+            let matchesCarrera = carreraInput === "" || carreraText.includes(carreraInput);
+            let matchesCuatrimestre = cuatrimestreInput === "" || cuatrimestreText.includes(cuatrimestreInput);
+    
+            // Show or hide the row based on the filter criteria
+            if (matchesMatricula && matchesNombre && matchesCarrera && matchesCuatrimestre) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+    </script>
+    
 </body>
 </html>
