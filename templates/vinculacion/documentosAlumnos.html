@@ -62,9 +62,23 @@
                     <div class="card" style="width: 18rem;">                       
                         <div class="card-body">
                             <small>Nombre Del Documento</small>
-                            <input type="text" class="form-control" value="formato_tres_opciones" readonly>
+                            <input type="text"  style="font-weight:bolder;" class="form-control" value="formato_tres_opciones" readonly>
+                            {% if alumno.formato_tres_opciones.estado == 'activo' %}
                             <small>Estatus</small>
-                            <input type="text" class="form-control" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            <input type="text" class="form-control"  style="color: green;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: Blue;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: rgb(0, 255, 0);" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'devuelto' %} 
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: yellow;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% else %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: red;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% endif %} 
                             <small>Comentario</small>
                             <input type="text" class="form-control" value="{{alumno.formato_tres_opciones.comentario}}" readonly>
                             
@@ -184,9 +198,23 @@
                     <div class="card" style="width: 18rem;">                       
                         <div class="card-body" >
                             <small>Nombre Del Documento</small>
-                            <input type="text" class="form-control" value="formato_tres_opciones" readonly>
+                            <input type="text"  style="font-weight:bolder;" class="form-control" value="formato_tres_opciones" readonly>
+                            {% if alumno.formato_tres_opciones.estado == 'activo' %}
                             <small>Estatus</small>
-                            <input type="text" class="form-control" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            <input type="text" class="form-control"  style="color: green;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'entregado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: Blue;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'aceptado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: rgb(0, 255, 0);" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% elif alumno.formato_tres_opciones.estado == 'devuelto' %} 
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: yellow;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% else %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: red;" value="{{alumno.formato_tres_opciones.estado}}" readonly>
+                            {% endif %} 
                             <small>Comentario</small>
                             <input type="text" class="form-control" value="{{alumno.formato_tres_opciones.comentario}}" readonly>
                             
@@ -304,9 +332,23 @@
                     <div class="card" style="width: 18rem;">                       
                         <div class="card-body" >
                             <small>Nombre Del Documento</small>
-                            <input type="text" class="form-control" value="{{key}}" readonly>
+                            <input type="text" style="font-weight:bolder;" class="form-control" value="{{key}}" readonly>
+                            {% if documento.estado == 'activo' %}
                             <small>Estatus</small>
-                            <input type="text" class="form-control" value="{{documento.estado}}" readonly>
+                            <input type="text" class="form-control" style="color: green;" value="{{documento.estado}}" readonly>
+                            {% elif documento.estado == 'entregado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: Blue;" value="{{documento.estado}}" readonly>
+                            {% elif documento.estado == 'aceptado' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: rgb(0, 255, 0);" value="{{documento.estado}}" readonly>
+                            {% elif documento.estado == 'devuelto' %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: yellow;" value="{{documento.estado}}" readonly>
+                            {% else %}
+                            <small>Estatus</small>
+                            <input type="text" class="form-control" style="color: red;" value="{{documento.estado}}" readonly>
+                            {% endif %}
                             <small>Comentario</small>
                             <input type="text" class="form-control" value="{{documento.comentario}}" readonly>
                             

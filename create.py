@@ -22,7 +22,13 @@ def init_create(app):
             if existing_alumno:
                 flash ('El correo o la matrícula ya están registrados.','warning')
                 return redirect(url_for('administrarAlumno'))
-
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Asigno tipo de estadìa a alumno'}}
+                )
             nombre = request.form['Nombre_Alumn']
             apellidos = request.form['apellidos_Alum']
             carrera = request.form['idCarrera']
@@ -120,6 +126,13 @@ def init_create(app):
         if alumno is None:
             flash('El alumno no está registrado', 'danger')
             return redirect(url_for('administrarAlumno'))
+        correo = session.get('correo')
+        if correo:
+            administracion = db['administradores']
+            administracion.update_one(
+                {"correo": correo}, 
+                {'$set': {'ultimo_movimiento': 'Asigno tipo de estadìa a alumno'}}
+            )
 
         if tipo_estadia == 'documentos_Especiales':
             documentos_Especiales_data = {
@@ -264,7 +277,13 @@ def init_create(app):
         estatus_existente = conexion.count_documents({'Estatus' : Status})
 
         if estatus_existente < 2:
-
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Agrego un periodo'}}
+                )
             conexion.insert_one({
                 'NombrePeriodo': nombre_periodo,
                 'Duracion': duración,
@@ -289,6 +308,13 @@ def init_create(app):
             carrera_existente = conexion.find_one({'NombreCarrera': nombreCarrera})
 
             if carrera_existente is None:
+                correo = session.get('correo')
+                if correo:
+                    administracion = db['administradores']
+                    administracion.update_one(
+                        {"correo": correo}, 
+                        {'$set': {'ultimo_movimiento': 'Agrego una carrera'}}
+                    )
                 conexion.insert_one({
                     'NombreCarrera': nombreCarrera,
                     'Abreviatura': abreviatura,

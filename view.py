@@ -10,7 +10,7 @@ from flask import send_file
 
 def init_view(app):
     # Ruta para mostrar el PDF en una nueva ventana o modal
-    @app.route('/alumno_UTA/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
+    @app.route('/EduLink/Vinculación/Validar/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
     def ver_archivo_alumno_uta(nombre_archivo, id_alumno):
         alumno = obtener_usuario_por_matricula(id_alumno)
         if alumno:
@@ -22,7 +22,7 @@ def init_view(app):
                 return send_file(documento_stream, as_attachment=False, mimetype=mimetype)
         return 'Archivo no encontrado', 404
     
-    @app.route('/alumno_UTA/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
+    @app.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/formato_tres_opciones/<id_alumno>', methods=['GET'])
     def ver_archivo_alumno_uta_1(id_alumno):
         
 
@@ -55,7 +55,7 @@ def init_view(app):
 
 
 
-    @app.route('/Validar/documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
+    @app.route('/EduLink/Vinculación/Validar/Documentos_Alumno/ver/<nombre_archivo>/<id_alumno>', methods=['GET'])
     def ver_archivo_alumno(nombre_archivo, id_alumno):
         alumno = obtener_usuario_por_matricula(id_alumno)
         if alumno:

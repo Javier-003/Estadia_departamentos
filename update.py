@@ -1,6 +1,6 @@
 import bcrypt
 from bson import  Binary, ObjectId
-from flask import flash, redirect,  request, url_for
+from flask import flash, redirect,  request, session, url_for
 import database as dbase
 from funciones import aceptar_documento, actualizar_estado_documento, subir_documento
 db = dbase.dbConnection()
@@ -23,8 +23,16 @@ def init_update(app):
         hashpass = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt())
 
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
+        
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Actualizo la información de un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -45,12 +53,47 @@ def init_update(app):
             flash('Alumno no encontrado en la base de datos','danger')
         return redirect(url_for('administrarAlumno'))
 
-
+    @app.route("/actualizar_carrera/", methods=['POST'])
+    def actualizar_carrera():
+        carrera_id = request.form['idCarrera']
+        carrera=db['carreras'].find_one({'_id':ObjectId(carrera_id)})
+        nombre = request.form['Nombre_nuevo']
+        abreviacion =request.form ['Abreviación_nueva']
+        
+        if carrera:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Actualizo una carrera'}}
+                )
+            db['carreras'].update_one(
+                {'_id':ObjectId(carrera_id)},
+                {
+                    '$set':{
+                        'NombreCarrera': nombre,
+                        'Abreviatura': abreviacion,
+                    }
+                }
+            )
+            flash (f'Carrera actualizada exitosamente', 'success')
+            return redirect(url_for('Carrera'))   
+        else:
+            flash (f'No se encontro carrera', 'danger')
+            return redirect(url_for('Carrera'))   
 
     @app.route('/actualizar_estado_documento/<id_alumno>/<documento_nombre>', methods=['GET', 'POST'])
     def actualizar_estado_documento_nuevo(id_alumno, documento_nombre):
 
         if actualizar_estado_documento(id_alumno, documento_nombre):
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Activo un documento de estadia'}}
+                )
             flash('Estado del documento actualizado exitosamente.', 'success')
         else:
             flash('No se pudo actualizar el estado del documento.', 'danger')
@@ -63,6 +106,13 @@ def init_update(app):
     def aceptar_documento_nuevo(id_alumno, documento_nombre):
         
         if aceptar_documento(id_alumno, documento_nombre):
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Acepto un documento'}}
+                )
             flash('Documento aceptado exitosamente.', 'success')
         else:
             flash('No se pudo aceptar el documento intentelo de nuevo.', 'danger')
@@ -74,6 +124,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Acepto un documento'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -109,6 +166,13 @@ def init_update(app):
         comentario = request.form['comentario']
         
         if devolver_documento(id_alumno, documento_nombre,comentario):
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                )
             flash('Documento devuelto exitosamente.', 'success')
         else:
             flash('No se pudo devolver el documento intentelo de nuevo.', 'danger')
@@ -122,6 +186,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Devolvio un documento'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -143,6 +214,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Acredito a un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -163,6 +241,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'No acredito a un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -183,6 +268,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno:
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Asigno con adeudo a un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -204,6 +296,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno: 
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Asigno folio de finanzas a un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {
@@ -226,6 +325,13 @@ def init_update(app):
         alumno = db['usuarios'].find_one({'_id':ObjectId(id_alumno)})
 
         if alumno: 
+            correo = session.get('correo')
+            if correo:
+                administracion = db['administradores']
+                administracion.update_one(
+                    {"correo": correo}, 
+                    {'$set': {'ultimo_movimiento': 'Asigno control de estadia a un alumno'}}
+                )
             db['usuarios'].update_one(
                 {'_id':ObjectId(id_alumno)},
                 {

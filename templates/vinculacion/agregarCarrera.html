@@ -97,15 +97,20 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="#" method="POST">
+                                    <form action="{{ url_for('actualizar_carrera') }}" method="POST">
                                     
                                         <div class="form-group">
-                                            <label>Nombre del Alumno</label>
-                                            <input type="text" class="form-control" value="{{carrera.NombreCarrera}}" id="Nombre_Alumn" name="Nombre_Alumn" required>
+                                            <label>Nombre de la carrera</label>
+                                            <input type="text" class="form-control" value="{{carrera.NombreCarrera}}" id="Nombre_nuevo" name="Nombre_nuevo" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Apellidos del Alumno</label>
-                                            <input type="text" class="form-control" value="{{carrera.Abreviatura}}" id="apellidos_Alum" name="apellidos_Alum" required>
+                                            <label>Abreviación</label>
+                                            <input type="text" class="form-control" value="{{carrera.Abreviatura}}" id="Abreviación_nueva" name="Abreviación_nueva" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="idCarrera" value="{{carrera._id }}">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios del Alumno</button>
                                         </div>
                                     </form>
                                 </div>
@@ -125,7 +130,7 @@
                             Estas seguro de eliminar la carrera de {{carrera.NombreCarrera}}
                             </div>
                             <div class="modal-footer">
-                            <form action="#" method="POST">
+                            <form action="{{ url_for('eliminarCarrera') }}" method="POST">
                                 
                                 <input type="hidden" name="idCarrera" value="{{carrera._id }}">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -170,29 +175,6 @@
             </div>
         </div>
     </div>
-    {% for carrera in carreras %}
-    <div class="modal fade" id="DeleteCarrera{{carrera.0}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar carrera</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Estas seguro de eliminar la carrera de {{carrera.NombreCarrera}}
-            </div>
-            <div class="modal-footer">
-              <form action="#" method="POST">
-                
-                <input type="hidden" name="idCarrera" value="{{carrera._id }}">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"> Eliminar</i></button>
-              </form>
-            </div>
-          </div>
-        </div>
-    </div>
-    {% endfor %}
 
 </body>
 

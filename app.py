@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, jsonify, render_template, url_for, redirect, flash, session, request
 import bcrypt
 import database as dbase
@@ -13,9 +14,15 @@ init_delete(app)
 init_update(app)
 init_view(app)
 app.secret_key = 'M0i1Xc$GfPw3Yz@2SbQ9lKpA5rJhDtE7'
-
+app.config['SESSION_COOKIE_NAME'] = 'session_admin'
 
 @app.route('/')
+@nocache
+def Index():
+    
+        return redirect(url_for('login'))
+
+@app.route('/EduLink/Vinculación/')
 @nocache
 def Home():
     if 'correo' in session:
@@ -32,11 +39,11 @@ def Home():
     else:
         return redirect(url_for('login'))
 
-@app.route('/login/')
+@app.route('/EduLink/Administradores/login/')
 def login():
     return render_template('login.html')
 
-@app.route("/iniciar_Periodo/")
+@app.route("/EduLink/Vinculación/Periodos/")
 @nocache
 def iniciarPeriodo():
     if 'correo' in session:
@@ -56,26 +63,27 @@ def iniciarPeriodo():
     else:
         return redirect(url_for('login'))
     
-@app.route('/registro/')
-def registro():
-    carreras = db['carreras'].find()
-    periodos=db['Periodos'].find()
-    return render_template('registro.html',Carreras = carreras, Periodos=periodos)
+
     
 @app.route('/iniciar/', methods=['POST'])
 def iniciar():
     administracion = db['administradores']
     correo = request.form['correo']
     password = request.form['password']
-    alumno = db['usuarios']
+    
 
     # Buscar en la colección de Administradores
     login_departamentos = administracion.find_one({'correo': correo})
-    if login_departamentos and login_departamentos['contraseña'] == password:
+    if login_departamentos and bcrypt.checkpw(password.encode('utf-8'), login_departamentos['contraseña']):
         session['correo'] = correo
         departamento = login_departamentos['departamento']
+        administracion.update_one({"correo":correo}, 
+            {'$set':{
+                'en_linea': True, 'ultima_conexion': datetime.now()
+            }})
+        
         if departamento == 'vinculacion':
-            return redirect(url_for('Home'))
+           return redirect(url_for('Home'))
         elif departamento == 'servicios_escolares':
             return redirect(url_for('servicios'))
         elif departamento == 'finanzas':
@@ -91,7 +99,7 @@ def iniciar():
 
 
     
-@app.route('/Validar/documentos_Alumno/<id_alumno>', methods=['GET', 'POST'])
+@app.route('/EduLink/Vinculación/Validar/Documentos_Alumno/<id_alumno>', methods=['GET', 'POST'])
 def documentosAlumnos(id_alumno=None):
     if id_alumno is None:
         id_alumno = request.form.get('id_alumno')
@@ -112,7 +120,7 @@ def documentosAlumnos(id_alumno=None):
 
 
 
-@app.route("/Validar/")
+@app.route("/EduLink/Vinculación/Validar/")
 @nocache
 def ValidarAlum():
     if 'correo' in session:
@@ -149,7 +157,7 @@ def ValidarAlum():
     
 
 
-@app.route("/Carreras/")
+@app.route("/EduLink/Vinculación/Carreras/")
 @nocache
 def Carrera():
     if 'correo' in session:
@@ -168,7 +176,7 @@ def Carrera():
     else:
         return redirect(url_for('login'))
 
-@app.route("/Archivos_Universidad/")
+@app.route("/EduLink/Vinculación/Archivos_Universidad/")
 @nocache
 def catalago():
     if 'correo' in session:
@@ -189,7 +197,7 @@ def catalago():
     else:
         return redirect(url_for('login'))
 
-@app.route("/administrar_Alumnos/")
+@app.route("/EduLink/Vinculación/administrar_Alumnos/")
 @nocache
 def administrarAlumno():
     if 'correo' in session:
@@ -226,7 +234,7 @@ def administrarAlumno():
 
 
 
-@app.route("/Finanzas/")
+@app.route("/EduLink/Finanzas/")
 def finanzas(): 
     if 'correo' in session:    
         correo_usuario = session['correo']
@@ -259,7 +267,7 @@ def finanzas():
     else:
         return redirect (url_for('login'))
 
-@app.route("/Servicios/")
+@app.route("/EduLink/Servicios/")
 def servicios(): 
     if 'correo' in session:
         correo_usuario = session['correo']
@@ -302,8 +310,16 @@ def servicios():
 @app.route('/logout')
 @nocache
 def logout():
-    session.clear()  #Elimina todas las variables de sesión
-    return redirect(url_for('login'))  #Redirige al inicio de sesión
+    correo = session.get('correo')
+    if correo:
+        administracion = db['administradores']
+        administracion.update_one(
+            {"correo": correo}, 
+            {'$set': {'en_linea': False}}
+        )
+    
+    session.clear()  # Elimina todas las variables de sesión
+    return redirect(url_for('login'))  # Redirige al inicio de sesión
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -311,4 +327,4 @@ def not_found_error(error):
 
 if __name__ == '__main__':
 
-    app.run(debug=True,host='0.0.0.0', port=5000)
+    app.run(debug=True,host='0.0.0.0', port=1000)
