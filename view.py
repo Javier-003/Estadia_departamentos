@@ -126,11 +126,11 @@ def init_view(app):
                     flash('Alumnos cargados, pero ocurrió un error al registrar actividades.', 'warning')
             else:
                 flash('El archivo debe de ser .xlsx, .xls para poder ser compatible', 'warning')
-                return redirect(url_for('administrarAlumno'))
+                return redirect(url_for('catalago'))
         else:
             archivo = None
 
-        return redirect(url_for('administrarAlumno'))
+        return redirect(url_for('Home'))
     
     
 

@@ -298,7 +298,8 @@ def progreso_alumno(id_alumno):
     Actividades = db["Actividades"]
 
     # Obtener todas las actividades desde la colección `Actividades` y ordenarlas por el campo `orden`
-    lista_actividades = list(Actividades.find({}).sort("orden", 1))
+    lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+
 
     # Obtener las IDs de las actividades en el orden correcto
     actividades_ordenadas = [actividad["_id"] for actividad in lista_actividades]
