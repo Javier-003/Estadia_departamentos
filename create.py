@@ -9,14 +9,14 @@ def init_create(app):
 
     @app.route("/agregar_Alumno/", methods=['POST'])
     def agregarAlumno():
-        alumnos = db["usuarios"]
+        alumnos = db["Alumnos"]
         if request.method == 'POST':
-            correo = request.form['correoAlumn']
-            matricula = request.form['matricula_Alum']
+            correo = request.form['Correo']
+            matricula = request.form['Matricula']
             existing_alumno = alumnos.find_one({
                 '$or': [
-                    {'correoAlumno': correo},
-                    {'matricula': matricula}
+                    {'Correo': correo},
+                    {'Matricula': matricula}
                 ]
             })
             if existing_alumno:
@@ -29,44 +29,54 @@ def init_create(app):
                     {"correo": correo}, 
                     {'$set': {'ultimo_movimiento': 'Asigno tipo de estadìa a alumno'}}
                 )
-            nombre = request.form['Nombre_Alumn']
-            apellidos = request.form['apellidos_Alum']
-            carrera = request.form['idCarrera']
-            estadia = request.form['estadia']
+            nombre = request.form['Nombre']
+            apellido_Pat = request.form['Apellido_Pat']
+            apellido_Mat = request.form['Apellido_Mat']
+            carrera = request.form['Carrera']
+            estadia = request.form['Estadia']
             periodo = request.form['idPeriodo']
-            grupo = request.form['grupo']
-            telefono =request.form['telefonoAlumno']
-            password = request.form['contraseñaAlumn']
+            grupo = request.form['Grupo']
+            telefono =request.form['Telefono']
+            password = request.form['Contraseña']
+            cuatrimestre = request.form['Cuatrimestre']
             hashpass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             
-            alumnos.insert_one({
-                'nombreAlumno': nombre,
-                'telefonoAlumno':telefono,
-                'apellidosAlumno': apellidos,
-                'grupo': grupo ,
-                'matricula': matricula,
-                'correoAlumno': correo,
-                'contraseñaAlumno': hashpass,
-                'idCarrera': carrera,
-                'estadiaAlumno': estadia,
-                'idPeriodo': periodo,
-                "tipo_estadia":'no asignado',
-                "estatus_servicios": 'no asignado',
-                "estatus_finanzas": 'no asignado',
-                "folio_finanzas":'no asignado',
-                "seguimiento_estadia":'no asignado',
-                "formato_tres_opciones": {"estado": "activo", "archivo": None, "comentario": None}
-            })
-            flash ('Alumno registrado exitosamente.','success')
+            # Inserta el nuevo alumno en la base de datos
+            nuevo_alumno_id = alumnos.insert_one({
+                'Matricula': matricula,
+                'Nombre': nombre,
+                'Apellido_Pat': apellido_Pat,
+                'Apellido_Mat': apellido_Mat,
+                'Correo_Institucional': correo,
+                'Contraseña': hashpass,
+                'Telefono': telefono,
+                'Carrera': carrera,
+                'Cuatrimestre': cuatrimestre,
+                'Grupo': grupo,
+                "Tipo_Estadía": 'nan',
+                "Estatus_Servicios": 'nan',
+                "Estatus_Finanzas": 'nan',
+                "Folio_Finanzas": 'nan',
+                "Control_Estadía": 'nan',
+                'Periodo': periodo,
+                'TSU/ING': estadia
+            }).inserted_id
+            
+            flash('Alumno registrado exitosamente.', 'success')
+            
+            # Llamar a la función para asignar actividades al nuevo alumno
+            asignar_actividades(nuevo_alumno_id)
             return redirect(url_for('administrarAlumno'))
+        
         else:
-            flash ('El alumno no se pudo registrar.','danger')
+            flash('El alumno no se pudo registrar.', 'danger')
+        
         return redirect(url_for('administrarAlumno'))
 
 
     @app.route("/Registrarse/", methods=['POST'])
     def Registrarse():
-        alumnos = db["usuarios"]
+        alumnos = db["Alumnos"]
         if request.method == 'POST':
             correo = request.form['correoAlumn']
             matricula = request.form['matricula_Alum']
@@ -324,4 +334,30 @@ def init_create(app):
             
             flash('Carrera ya existente', 'danger')
         return redirect(url_for('Carrera'))
+    
+    def asignar_actividades(id_alumno):
+        # Colecciones
+        Actividades = db["Actividades"]
+        Alumnos_Act = db["Alumnos_Actividades"]
+        
+        lista_actividades = list(Actividades.find().sort("Orden", 1))  # Convertir a lista para evitar múltiples consultas
+        
+        # Crear registros en Alumnos_Actividades para el nuevo alumno
+        alumno_actividades = []  # Crea un arreglo para las actividades del alumno
+        for actividad in lista_actividades:
+            # Verificar si la actividad es la de orden 0
+            estatus = "completado" if actividad["Orden"] == 0 else "no iniciado"
+
+            alumno_actividad = {
+                "idAlumno": id_alumno,
+                "idActividad": actividad["_id"],
+                "estatus": estatus  # Establecer el estatus según el orden de la actividad
+            }
+            alumno_actividades.append(alumno_actividad)  # Inserta en el arreglo alumno_actividad
+        
+        # Inserta las actividades del nuevo alumno
+        if alumno_actividades:
+            Alumnos_Act.insert_many(alumno_actividades)
+
+        return True
 

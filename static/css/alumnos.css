@@ -1,0 +1,178 @@
+/* static/css/alumnos.css */
+
+/* Contenedor principal para los alumnos */
+.alumnos-container {
+    padding: 20px;
+
+    background-color: #ffffff; /* Fondo oscuro */
+
+}
+
+/* Título de la página */
+.alumnos-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #66bb6a; /* Verde claro para el título */
+}
+
+/* Barra de búsqueda */
+.alumnos-container .search-bar {
+    margin-bottom: 15px;
+    margin-left: 10%;
+}
+
+.alumnos-container select {
+    margin-bottom: 15px;
+    margin-left: 1%;
+    width: 20%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background-color: #2d2d3f; /* Fondo oscuro */
+    font-size: 100%;
+    color: #fff; /* Texto claro */
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.alumnos-container button {
+    margin-bottom: 10px;
+    margin-left: 1%;
+    width: 10%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background-color: #666666; /* Fondo oscuro */
+    font-size: 100%;
+    color: #fff; /* Texto claro */
+    outline: none;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+
+}
+
+.alumnos-container .search-bar input {
+    width: 20%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background-color: #2d2d3f; /* Fondo oscuro */
+    font-size: 90%;
+    color: #fff; /* Texto claro */
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.alumnos-container .search-bar input:focus {
+    border-color: #66bb6a; /* Acento verde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo de la tabla */
+.alumnos-container .alumnos-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2d2d3f; /* Fondo oscuro */
+    color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.alumnos-container .alumnos-table thead {
+    background-color: #3b3b50; /* Fondo más oscuro */
+    color: #66bb6a; /* Verde claro */
+}
+
+.alumnos-container .alumnos-table th, 
+.alumnos-container .alumnos-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.alumnos-container .alumnos-table tbody tr:hover {
+    background-color: #3e4145; /* Fondo más claro al pasar el ratón */
+}
+
+.alumnos-container .alumnos-table tbody tr:nth-child(even) {
+    background-color: #29293c; /* Alternar filas */
+}
+
+/* Fondo de la tabla */
+.alumnos-container .alumnos-table td {
+    color: #f1f1f1;
+}
+
+
+
+.sidebar {
+    z-index: 1000;
+}
+
+
+/* Estilo de la tabla */
+.table-container {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    margin-top: 20px; /* Espaciado superior */
+}
+
+.alumnos-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #2d2d3f;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.alumnos-table thead {
+    background-color: #3b3b50;
+    color: #66bb6a;
+}
+
+.alumnos-table th, 
+.alumnos-table td {
+    font-size: 15px;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.alumnos-table tbody tr:hover {
+    background-color: #3e4145;
+}
+
+.alumnos-table tbody tr:nth-child(even) {
+    background-color: #29293c;
+}
+
+
+.form-group select {
+    margin-left: 1px;
+    width: 100%; /* Asegurarse de que ocupe todo el ancho del contenedor */
+    padding: 10px; /* Espaciado interno para una mejor apariencia */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #555; /* Color del texto */
+    background-color: #f9f9f9; /* Color de fondo */
+    border: 1px solid rgb(160, 160, 160); /* Borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    appearance: none; /* Remover estilos predeterminados del navegador */
+    cursor: pointer; /* Cambiar el cursor para indicar que es interactivo */
+    
+}
+
+/* Estilo para el select al estar en foco */
+.form-group select:focus {
+    border-color: #6990f2; /* Cambiar color del borde al seleccionar */
+    outline: none; /* Remover borde adicional */
+}
+
+/* Ajuste para select con flecha */
+.form-group select {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjk5MGYyIiBoZWlnaHQ9IjEwIiB2aWV3Qm94PSIwIDAgMTEgNiIgd2lkdGg9IjEwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDAgNSAzIDAgNmgxMWwtNS0zeiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 10px;
+}
