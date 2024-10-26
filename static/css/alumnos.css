@@ -1,67 +1,77 @@
 /* static/css/alumnos.css */
 
+:root {
+    --primary-color: #007bff; /* Azul claro */
+    --secondary-color: #28a745; /* Verde */
+    --accent-color: #fd7e14; /* Naranja */
+    --background-light: #f8f9fa; /* Fondo claro */
+    --background-dark: #343a40; /* Fondo oscuro */
+    --text-color: #212529; /* Color de texto */
+}
+
+/* Fondo y color de texto */
+body {
+    background-color: var(--background-light);
+    color: var(--text-color);
+    font-family: 'Roboto', sans-serif;
+}
+
 /* Contenedor principal para los alumnos */
 .alumnos-container {
-    padding: 20px;
-
-    background-color: #ffffff; /* Fondo oscuro */
+    padding: 30px;
+    background-color: var(--background-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
 }
 
 /* Título de la página */
 .alumnos-container h1 {
-    text-align: center;
+    color: var(--secondary-color);
+    font-size: 2.2em;
     margin-bottom: 20px;
-    color: #66bb6a; /* Verde claro para el título */
 }
 
 /* Barra de búsqueda */
-.alumnos-container .search-bar {
-    margin-bottom: 15px;
-    margin-left: 10%;
+.search-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: center;
 }
 
-.alumnos-container select {
-    margin-bottom: 15px;
-    margin-left: 1%;
-    width: 20%;
+.search-bar input,
+.search-bar select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
     padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background-color: #2d2d3f; /* Fondo oscuro */
-    font-size: 100%;
-    color: #fff; /* Texto claro */
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    font-size: 1em;
+    width: 200px;
+    background-color: white;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.alumnos-container button {
-    margin-bottom: 10px;
-    margin-left: 1%;
-    width: 10%;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background-color: #666666; /* Fondo oscuro */
-    font-size: 100%;
-    color: #fff; /* Texto claro */
-    outline: none;
-    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
-
+.search-bar input:focus,
+.search-bar select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
 
-.alumnos-container .search-bar input {
-    width: 20%;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background-color: #2d2d3f; /* Fondo oscuro */
-    font-size: 90%;
-    color: #fff; /* Texto claro */
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+/* Botón de agregar alumno */
+.search-bar .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar .btn:hover {
+    background-color: var(--accent-color);
 }
 
 .alumnos-container .search-bar input:focus {
@@ -73,38 +83,44 @@
 .alumnos-container .alumnos-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #2d2d3f; /* Fondo oscuro */
-    color: #fff;
+    background-color: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .alumnos-container .alumnos-table thead {
-    background-color: #3b3b50; /* Fondo más oscuro */
-    color: #66bb6a; /* Verde claro */
+    background-color: var(--primary-color);
+    color: white;
 }
 
-.alumnos-container .alumnos-table th, 
-.alumnos-container .alumnos-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #444;
+.alumnos-table th,
+.alumnos-table td {
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .alumnos-container .alumnos-table tbody tr:hover {
-    background-color: #3e4145; /* Fondo más claro al pasar el ratón */
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
 }
 
 .alumnos-container .alumnos-table tbody tr:nth-child(even) {
-    background-color: #29293c; /* Alternar filas */
+    background-color: #d3d4d4; /* Alternar filas */
 }
 
 /* Fondo de la tabla */
-.alumnos-container .alumnos-table td {
-    color: #f1f1f1;
+.alumnos-table,
+.search-bar {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
+/* Estilo de los encabezados de la tabla */
+.alumnos-table thead th {
+    font-weight: bold;
+    font-size: 1.1em;
+}
 
 
 .sidebar {
@@ -175,4 +191,131 @@
     background-repeat: no-repeat;
     background-position: right 15px center;
     background-size: 10px;
+}
+
+/* Estilos para la barra lateral de progreso */
+.sidebar-progreso {
+    position: fixed;
+    top: 0;
+    right: -320px; /* Ocultar inicialmente */
+    width: 320px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+    transition: right 0.4s ease;
+    z-index: 1050;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+/* Mostrar la barra lateral */
+.sidebar-progreso.show {
+    right: 0;
+}
+
+/* Estilo del encabezado */
+.sidebar-progreso .header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-progreso .header h3 {
+    font-size: 1.1em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-progreso .header h3::before {
+    content: "\f058"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.sidebar-progreso .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.sidebar-progreso .contenido {
+    flex: 1;
+}
+
+/* Separador después del nombre */
+.sidebar-progreso .contenido hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 15px 0;
+}
+
+/* Estilo del nombre del alumno */
+.sidebar-progreso #nombreAlumno {
+    font-size: 1.4em;
+    color: #343a40;
+    margin-bottom: 15px;
+}
+
+/* Barra de progreso */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    height: 25px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    height: 100%;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+/* Colores de la barra de progreso */
+.bg-primary {
+    background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
+}
+
+.bg-success {
+    background: linear-gradient(90deg, #28a745 0%, #85e085 100%);
+}
+
+/* Estilo de la última actividad */
+.sidebar-progreso .contenido p {
+    font-size: 1em;
+    color: #6c757d;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-progreso .contenido p::before {
+    content: "\f0ae"; /* Ícono de Font Awesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+    color: #28a745;
+}
+
+/* Efectos de hover en el botón de cerrar */
+.sidebar-progreso .close-btn:hover {
+    color: #ff4d4d;
+    transition: color 0.3s ease;
 }
