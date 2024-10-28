@@ -196,6 +196,7 @@ def Home():
  
             # Convertir periodos a diccionarios con _id como clave
             periodos_dict = {str(periodo['_id']): {'Duracion': periodo['Duracion']} for periodo in periodos}
+            
             # Obtener todos los alumnos
             lista_alumnos = list(alumnos.find({}))
 
@@ -205,22 +206,24 @@ def Home():
             for alumno in lista_alumnos:
                 periodo_info = periodos_dict.get(alumno.get('Periodo'), {'Duracion': ''})
                 alumno['Duracion'] = periodo_info['Duracion']
-                # Calcular el progreso y obtener la última actividad completada
-                progreso, ultima_actividad = progreso_alumno(alumno["_id"])
+                
+                # Calcular el progreso y obtener las actividades del alumno
+                progreso, actividades_alumno = progreso_alumno(alumno["_id"])
 
-                # Añadir el progreso y la última actividad al diccionario del alumno
+                # Añadir el progreso y las actividades al diccionario del alumno
                 alumno["progreso"] = progreso
-                alumno["ultima_actividad"] = ultima_actividad  # Añadir la última actividad
+                alumno["actividades"] = actividades_alumno
 
                 # Agregar a la lista de resultados
                 alumnos_con_progreso.append(alumno)
 
-            return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso,periodos=periodos)
+            return render_template("vinculacion/alumnos.html", alumnos=alumnos_con_progreso, periodos=periodos)
         else:
             flash('Acceso denegado: No eres un administrador.', 'danger')
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
+
 
 
 
@@ -300,41 +303,53 @@ def progreso_alumno(id_alumno):
     # Obtener todas las actividades desde la colección `Actividades` y ordenarlas por el campo `orden`
     lista_actividades = list(Actividades.find({}).sort("orden", 1))
 
+    # Crear un diccionario para acceder al nombre de la actividad por su ID usando el campo "Actividad"
+    actividades_dict = {actividad["_id"]: actividad["Actividad"] for actividad in lista_actividades}
+
     # Obtener las IDs de las actividades en el orden correcto
     actividades_ordenadas = [actividad["_id"] for actividad in lista_actividades]
 
     # Obtener todas las actividades del alumno
     actividades_alumno = list(Alumnos_Act.find({"idAlumno": id_alumno}))
 
-    # Ordenar las actividades del alumno usando el orden de `actividades_ordenadas`
-    actividades_alumno.sort(key=lambda x: actividades_ordenadas.index(x["idActividad"]))
+    # Crear un diccionario para mapear las actividades del alumno por su ID
+    actividades_alumno_dict = {actividad["idActividad"]: actividad for actividad in actividades_alumno}
 
-    # Contadores
-    total_actividades = len(actividades_alumno)
+    # Lista para almacenar todas las actividades con información completa
+    todas_las_actividades = []
     completadas = 0
-    ultima_actividad = None  # Variable para guardar el nombre de la última actividad completada
 
-    # Revisar actividades en orden y contar cuántas están completadas
-    for actividad in actividades_alumno:
-        if actividad["estatus"] == "completado":
-            completadas += 1
-            # Obtener el nombre de la actividad correspondiente
-            actividad_info = Actividades.find_one({"_id": actividad["idActividad"]})  # Corrección aquí
-            if actividad_info:
-                ultima_actividad = actividad_info["Actividad"]  # Guarda solo el nombre        
+    # Revisar todas las actividades en el orden y agregarlas con sus respectivos estados
+    for actividad_id in actividades_ordenadas:
+        # Nombre de la actividad
+        actividad_nombre = actividades_dict.get(actividad_id, "Actividad no encontrada")
+
+        # Verificar si el alumno ha realizado esta actividad
+        if actividad_id in actividades_alumno_dict:
+            actividad_alumno = actividades_alumno_dict[actividad_id]
+            estatus = actividad_alumno["estatus"]
         else:
-            # Tan pronto como encuentres una actividad no completada, para el conteo
-            break
+            estatus = "pendiente"
+
+        # Añadir a la lista de actividades con nombre y estado
+        todas_las_actividades.append({
+            "idActividad": actividad_id,
+            "nombre": actividad_nombre,
+            "estatus": estatus
+        })
+
+        # Contar las completadas
+        if estatus == "completado":
+            completadas += 1
 
     # Calcular el porcentaje de progreso
+    total_actividades = len(lista_actividades)
     if total_actividades > 0:
         progreso = (completadas / total_actividades) * 100
     else:
         progreso = 0
 
-    return progreso, ultima_actividad  # Devuelve el progreso y el nombre de la última actividad completada
-
-
+    return progreso, todas_las_actividades  # Devuelve el progreso y todas las actividades con estatus y nombres
 
 
 

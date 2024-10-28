@@ -80,44 +80,46 @@ body {
 }
 
 /* Estilo de la tabla */
-.alumnos-container .alumnos-table {
+.alumnos-container .alumnos-table-list {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: left;
 }
 
-.alumnos-container .alumnos-table thead {
+.alumnos-container .alumnos-table-list thead {
     background-color: var(--primary-color);
     color: white;
 }
 
-.alumnos-table th,
-.alumnos-table td {
+.alumnos-table-list th,
+.alumnos-table-list td {
+    font-size: 15px;
     padding: 15px;
     border-bottom: 1px solid #dee2e6;
 }
 
-.alumnos-container .alumnos-table tbody tr:hover {
+.alumnos-container .alumnos-table-list tbody tr:hover {
     background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
 }
 
-.alumnos-container .alumnos-table tbody tr:nth-child(even) {
+.alumnos-container .alumnos-table-list tbody tr:nth-child(even) {
     background-color: #d3d4d4; /* Alternar filas */
 }
 
 /* Fondo de la tabla */
-.alumnos-table,
+.alumnos-table-list,
 .search-bar {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
 /* Estilo de los encabezados de la tabla */
-.alumnos-table thead th {
+.alumnos-table-list thead th {
     font-weight: bold;
     font-size: 1.1em;
 }
@@ -130,38 +132,62 @@ body {
 
 /* Estilo de la tabla */
 .table-container {
-    overflow-x: auto; /* Habilita el desplazamiento horizontal */
-    margin-top: 20px; /* Espaciado superior */
+    max-height: 55%; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
+    border: 1px solid #ddd; /* Opcional: añade un borde alrededor del contenedor */
+    border-radius: 8px; /* Opcional: redondea las esquinas */
 }
-
+/* Oculta la barra de desplazamiento */
+.table-container::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento */
+}
 .alumnos-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #2d2d3f;
+    background-color: white;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
-.alumnos-table thead {
-    background-color: #3b3b50;
-    color: #66bb6a;
+.alumnos-table thead th {
+    position: sticky; /* Hacer que el encabezado sea fijo */
+    top: 0; /* Fijar en la parte superior del contenedor */
+    background-color: var(--primary-color); /* Color de fondo */
+    color: white; /* Color del texto */
+    z-index: 10; /* Asegúrate de que esté encima del contenido */
 }
 
 .alumnos-table th, 
 .alumnos-table td {
-    font-size: 15px;
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #444;
+    font-size: 13px;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .alumnos-table tbody tr:hover {
-    background-color: #3e4145;
+    background-color: #f1f3f5; /* Fondo más claro al pasar el ratón */
 }
 
 .alumnos-table tbody tr:nth-child(even) {
-    background-color: #29293c;
+    background-color: #d3d4d4; /* Alternar filas */
+}
+
+.alumnos-table .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 4px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.alumnos-table .btn:hover {
+    background-color: var(--accent-color);
 }
 
 
@@ -195,10 +221,10 @@ body {
 
 /* Estilos para la barra lateral de progreso */
 .sidebar-progreso {
-    position: fixed;
+    position:fixed;
     top: 0;
-    right: -320px; /* Ocultar inicialmente */
-    width: 320px;
+    right: -360px; /* Ocultar inicialmente */
+    width: 350px;
     height: 100%;
     background-color: #ffffff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
@@ -215,6 +241,8 @@ body {
 .sidebar-progreso.show {
     right: 0;
 }
+
+
 
 /* Estilo del encabezado */
 .sidebar-progreso .header {
